@@ -10,7 +10,7 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
-@Configuration
+@Component
 public class MegaUltraBot extends TelegramLongPollingBot{
 
     private final String BOT_USER_NAME = "MegaUltraBot";
