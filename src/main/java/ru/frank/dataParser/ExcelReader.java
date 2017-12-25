@@ -41,6 +41,11 @@ public class ExcelReader {
         return "";
     }
 
+    /**
+     * Method is return values from 1 row (of cells with any data) as a 1 string, split by '|'.
+     * @param row;
+     * @return Stringl
+     */
     private String getRowValuesAsString(XSSFRow row){
         StringBuilder stringBuilder = new StringBuilder();
         Iterator cellIterator = row.cellIterator();

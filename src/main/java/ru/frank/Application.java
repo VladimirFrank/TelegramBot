@@ -9,7 +9,7 @@ public class Application {
 
     // Need to do this:
     // At the beginning of your program
-    // (before creating your TelegramBotsApi instance, add the following line
+    // (before creating your TelegramBotsApi instance, add the following line:
     static {
         ApiContextInitializer.init();
     }
