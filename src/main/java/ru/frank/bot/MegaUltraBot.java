@@ -30,7 +30,6 @@ public class MegaUltraBot extends TelegramLongPollingBot{
     @Override
     public void onUpdateReceived(Update update) {
         Message message = update.getMessage();
-        String textMessage;
         if(message != null && message.hasText()){
             String botAnswer = parseIncomingText(message.getText());
             sendMessage(message, botAnswer);
@@ -43,7 +42,7 @@ public class MegaUltraBot extends TelegramLongPollingBot{
             return "Пришли номер розетки или номер порта и я отвечу тебе, где это и чье.";
         } else if(textToParse.contains("/") || textToParse.contains(".")){
             try {
-                return excelReader.findRowByValue(pathToExcelFile, textToParse);
+                return excelReader.findLineInExcelFile(pathToExcelFile, textToParse);
             } catch (IOException e) {
                 e.printStackTrace();
             }
