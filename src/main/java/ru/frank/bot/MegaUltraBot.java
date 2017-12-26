@@ -52,7 +52,7 @@ public class MegaUltraBot extends TelegramLongPollingBot{
             // Attention! Russian letters used in .contain() method ! //
         } else if(officeLetter.equalsIgnoreCase("А")){
             if(textToParse.contains("-")){
-                textToParseWithoutOffice = textToParse.substring(1).replace("-", ".");
+                textToParseWithoutOffice = textToParse.substring(1).replaceAll("-", ".").replaceAll(" ", "");
                 try{
                     return excelReader.findLineInExcelFile(getPathToCrossJournal(officeLetter), textToParseWithoutOffice);
                 } catch (IOException e) {
@@ -62,7 +62,7 @@ public class MegaUltraBot extends TelegramLongPollingBot{
             }
         } else if(officeLetter.equalsIgnoreCase("T")){
             if(textToParse.contains("-")){
-                textToParseWithoutOffice = textToParse.substring(1).replace("-", ".");
+                textToParseWithoutOffice = textToParse.substring(1).replaceAll("-", ".").replaceAll(" ", "");
                 try{
                     return excelReader.findLineInExcelFile(getPathToCrossJournal(officeLetter), textToParseWithoutOffice);
                 } catch (IOException e) {

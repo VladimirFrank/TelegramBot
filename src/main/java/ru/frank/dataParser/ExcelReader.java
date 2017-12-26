@@ -1,5 +1,6 @@
 package ru.frank.dataParser;
 
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -10,11 +11,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 public class ExcelReader {
 
     private XSSFWorkbook excelBook;
     private XSSFSheet excelSheet;
+    private DataFormatter dataFormatter;
 
     /**
      * Find String param in excel file.
@@ -54,6 +57,7 @@ public class ExcelReader {
      * @throws IOException
      */
     private ArrayList<String> findRowByValue(String path, String stringToFind) throws IOException{
+        dataFormatter = new DataFormatter(Locale.US);
         ArrayList <String> resultList = new ArrayList<String>();
         excelBook = new XSSFWorkbook(new FileInputStream(path));
         // Only on first sheet of file.
@@ -64,7 +68,8 @@ public class ExcelReader {
             Iterator cellIterator = row.cellIterator();
             while(cellIterator.hasNext()){
                 XSSFCell cell = (XSSFCell) cellIterator.next();
-                if(cell.getStringCellValue().contains(stringToFind)){
+                String cellValue = dataFormatter.formatCellValue(cell);
+                if(cellValue.contains(stringToFind)){
                     resultList.add(getRowValuesAsString(row));
                 }
             }
@@ -80,11 +85,12 @@ public class ExcelReader {
      */
     private String getRowValuesAsString(XSSFRow row){
         StringBuilder stringBuilder = new StringBuilder();
+        dataFormatter = new DataFormatter(Locale.US);
         Iterator cellIterator = row.cellIterator();
         stringBuilder.append("(");
         while(cellIterator.hasNext()){
             XSSFCell cell = (XSSFCell) cellIterator.next();
-            stringBuilder.append(cell.getStringCellValue()).append(" | ");
+            stringBuilder.append(dataFormatter.formatCellValue(cell)).append(" | ");
         }
         stringBuilder.append(")");
         return stringBuilder.toString();
