@@ -44,41 +44,53 @@ public class MegaUltraBot extends TelegramLongPollingBot{
     // Parse incoming message and return answer String
     public String parseIncomingText(String textToParse){
 
-        String textToParseWithoutOffice;
-        String officeLetter = textToParse.substring(0, 1);
-        // List of bot's commands
         if(textToParse.contains("/help")){
             return "Пришли номер розетки или номер порта и я отвечу тебе, где это и чье.";
-            // Attention! Russian letters used in .contain() method ! //
-        } else if(officeLetter.equalsIgnoreCase("А")){
-            if(textToParse.contains("-")){
-                textToParseWithoutOffice = textToParse.substring(1).replaceAll("-", ".").replaceAll(" ", "");
-                try{
-                    return excelReader.findLineInExcelFile(getPathToCrossJournal(officeLetter), textToParseWithoutOffice);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        }
 
-            }
-        } else if(officeLetter.equalsIgnoreCase("T")){
-            if(textToParse.contains("-")){
-                textToParseWithoutOffice = textToParse.substring(1).replaceAll("-", ".").replaceAll(" ", "");
-                try{
-                    return excelReader.findLineInExcelFile(getPathToCrossJournal(officeLetter), textToParseWithoutOffice);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
+        if(textToParse.contains("-")){
+            try {
+                return getNetworkRosette(textToParse);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
+
+
         return "Не понятная команда, для вызова меню команд, введите /help";
     }
 
+    private String getNetworkRosette(String lineForFind) throws IOException{
+        String rosetteToFind = lineForFind.substring(1).replaceAll(" ", "").replaceAll("-", ".");
+        if(lineForFind.contains("а") || lineForFind.contains("А")){
+            return excelReader.findLineInExcelFile(getPathToCrossJournal("а"), rosetteToFind);
+        } else if(lineForFind.contains("т") || lineForFind.contains("Т")){
+            return excelReader.findLineInExcelFile(getPathToCrossJournal("т"), rosetteToFind);
+        } else if(lineForFind.contains("к") || lineForFind.contains("К")){
+            return excelReader.findLineInExcelFile(getPathToCrossJournal("к"), rosetteToFind);
+        } else{
+            return "Не найден офис с таким ID.";
+        }
+    }
+
+    /**
+     * Get path to excel file by OfficeLetter (WARNING! Russian Letters in method!)
+     * A - Aurora
+     * T - Technopark
+     * K - Kronos
+     * @param officeLetter
+     * @return String PathToFile;
+     */
     private String getPathToCrossJournal(String officeLetter){
         return filePathUploader.getCrossJournalPath(officeLetter);
     }
 
     private void sendMessage(Message message, String text){
+        // Temporary verification
+        // TODO Replace verification to finding method
+        if(text == null || text.equals("")){
+            text = "Не найдена информация по вашему запросу";
+        }
         SendMessage sendMessage = new SendMessage();
         sendMessage.enableMarkdown(true);
         sendMessage.setChatId(message.getChatId().toString());

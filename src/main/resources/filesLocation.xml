@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <filesLocation>
-    <crossJournal id="aurora">C:\Users\dfnote021\IdeaProjects\TelegramBot\src\main\resources\кроссовый_журнал_Аврора.xlsx</crossJournal>
-    <crossJournal id="technopark">C:\Users\dfnote021\IdeaProjects\TelegramBot\src\main\resources\кроссовый_журнал_Технопарк.xlsx</crossJournal>
+    <crossJournal id="aurora">F:\JavaProjects\TelegramBot\src\main\resources\кроссовый_журнал_Аврора.xlsx</crossJournal>
+    <crossJournal id="technopark">F:\JavaProjects\TelegramBot\src\main\resources\кроссовый_журнал_Технопарк.xlsx</crossJournal>
 
 </filesLocation>

@@ -18,7 +18,7 @@ public class FilePathUploader {
     public String getCrossJournalPath(String officeLocationLetter){
         try{
             documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            document = documentBuilder.parse("C:\\Users\\dfnote021\\IdeaProjects\\TelegramBot\\src\\main\\resources\\filesLocation.xml");
+            document = documentBuilder.parse("F:\\JavaProjects\\TelegramBot\\src\\main\\resources\\filesLocation.xml");
             document.getDocumentElement().normalize();
 
             root = document.getDocumentElement();
