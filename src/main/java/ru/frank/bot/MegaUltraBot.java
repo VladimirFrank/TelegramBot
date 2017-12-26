@@ -44,7 +44,7 @@ public class MegaUltraBot extends TelegramLongPollingBot{
     // Parse incoming message and return answer String
     public String parseIncomingText(String textToParse){
 
-        String textToParseWithoutOffice = textToParse.substring(1);
+        String textToParseWithoutOffice;
         String officeLetter = textToParse.substring(0, 1);
         // List of bot's commands
         if(textToParse.contains("/help")){
@@ -52,7 +52,7 @@ public class MegaUltraBot extends TelegramLongPollingBot{
             // Attention! Russian letters used in .contain() method ! //
         } else if(officeLetter.equalsIgnoreCase("А")){
             if(textToParse.contains("-")){
-                textToParseWithoutOffice = textToParse.replace("-", ".");
+                textToParseWithoutOffice = textToParse.substring(1).replace("-", ".");
                 try{
                     return excelReader.findLineInExcelFile(getPathToCrossJournal(officeLetter), textToParseWithoutOffice);
                 } catch (IOException e) {
@@ -62,7 +62,7 @@ public class MegaUltraBot extends TelegramLongPollingBot{
             }
         } else if(officeLetter.equalsIgnoreCase("T")){
             if(textToParse.contains("-")){
-                textToParseWithoutOffice = textToParse.replace("-", ".");
+                textToParseWithoutOffice = textToParse.substring(1).replace("-", ".");
                 try{
                     return excelReader.findLineInExcelFile(getPathToCrossJournal(officeLetter), textToParseWithoutOffice);
                 } catch (IOException e) {

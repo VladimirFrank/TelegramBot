@@ -18,19 +18,19 @@ public class FilePathUploader {
     public String getCrossJournalPath(String officeLocationLetter){
         try{
             documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            document = documentBuilder.parse("E:\\projects\\TelegramBot\\src\\main\\resources\\filesLocation.xml");
+            document = documentBuilder.parse("C:\\Users\\dfnote021\\IdeaProjects\\TelegramBot\\src\\main\\resources\\filesLocation.xml");
             document.getDocumentElement().normalize();
 
             root = document.getDocumentElement();
             NodeList pathList = document.getElementsByTagName("crossJournal");
 
             String officeName;
-            if(officeLocationLetter.equalsIgnoreCase("A")){
+            if(officeLocationLetter.equalsIgnoreCase("а")){
                 officeName = "aurora";
-            } else if(officeLocationLetter.equalsIgnoreCase("T")){
+            } else if(officeLocationLetter.equalsIgnoreCase("т")){
                 officeName = "technopark";
             } else{
-                officeName = "kronos";
+                return "";
             }
 
             for(int i = 0; i < pathList.getLength(); i++){
