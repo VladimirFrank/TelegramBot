@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.telegram.telegrambots.TelegramBotsApi;
 import ru.frank.bot.MegaUltraBot;
 import ru.frank.dataParser.ExcelReader;
+import ru.frank.service.fileService.FilePathUploader;
 
 @Configuration
 public class ApplicationConfiguration {
@@ -17,6 +18,11 @@ public class ApplicationConfiguration {
     @Bean
     public ExcelReader excelReader(){
         return new ExcelReader();
+    }
+
+    @Bean
+    public FilePathUploader filePathUploader(){
+        return new FilePathUploader();
     }
 
 }

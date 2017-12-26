@@ -11,6 +11,7 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 import ru.frank.dataParser.ExcelReader;
+import ru.frank.service.fileService.FilePathUploader;
 
 import java.io.IOException;
 
@@ -21,12 +22,16 @@ public class MegaUltraBot extends TelegramLongPollingBot{
     private final String TOKEN = "458631815:AAFChJilHO8JIkske5O0kXntuCGP68XTi3s";
 
     // TODO Move that path to configuration file, not hardcoded.
-    private String pathToExcelFile = "F:\\JavaProjects\\TelegramBot\\src\\main\\resources\\Test_Document.xlsx";
+    //private String pathToExcelFile = "F:\\JavaProjects\\TelegramBot\\src\\main\\resources\\Test_Document.xlsx";
+
+    @Autowired
+    private FilePathUploader filePathUploader;
 
     @Autowired
     private ExcelReader excelReader;
 
 
+    // Getting new message and answer it.
     @Override
     public void onUpdateReceived(Update update) {
         Message message = update.getMessage();
@@ -36,18 +41,41 @@ public class MegaUltraBot extends TelegramLongPollingBot{
         }
     }
 
-    private String parseIncomingText(String textToParse){
+    // Parse incoming message and return answer String
+    public String parseIncomingText(String textToParse){
+
+        String textToParseWithoutOffice = textToParse.substring(1);
+        String officeLetter = textToParse.substring(0, 1);
         // List of bot's commands
         if(textToParse.contains("/help")){
             return "Пришли номер розетки или номер порта и я отвечу тебе, где это и чье.";
-        } else if(textToParse.contains("/") || textToParse.contains(".")){
-            try {
-                return excelReader.findLineInExcelFile(pathToExcelFile, textToParse);
-            } catch (IOException e) {
-                e.printStackTrace();
+            // Attention! Russian letters used in .contain() method ! //
+        } else if(officeLetter.equalsIgnoreCase("А")){
+            if(textToParse.contains("-")){
+                textToParseWithoutOffice = textToParse.replace("-", ".");
+                try{
+                    return excelReader.findLineInExcelFile(getPathToCrossJournal(officeLetter), textToParseWithoutOffice);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        } else if(officeLetter.equalsIgnoreCase("T")){
+            if(textToParse.contains("-")){
+                textToParseWithoutOffice = textToParse.replace("-", ".");
+                try{
+                    return excelReader.findLineInExcelFile(getPathToCrossJournal(officeLetter), textToParseWithoutOffice);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
         }
         return "Не понятная команда, для вызова меню команд, введите /help";
+    }
+
+    private String getPathToCrossJournal(String officeLetter){
+        return filePathUploader.getCrossJournalPath(officeLetter);
     }
 
     private void sendMessage(Message message, String text){

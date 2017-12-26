@@ -16,13 +16,20 @@ public class ExcelReader {
     private XSSFWorkbook excelBook;
     private XSSFSheet excelSheet;
 
+    /**
+     * Find String param in excel file.
+     * @param filePath - path to excel file
+     * @param lineToFind - String to find
+     * @return String
+     * @throws IOException
+     */
     public String findLineInExcelFile(String filePath, String lineToFind) throws IOException{
         return getFindedRowAsString(findRowByValue(filePath, lineToFind));
     }
 
 
     /**
-     *
+     * Make any numbers of cells in one row from excel file as a List <String> to one String for send message;
      * @param listOfStrings
      * @return
      */

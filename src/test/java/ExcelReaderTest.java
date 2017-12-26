@@ -9,4 +9,8 @@ public class ExcelReaderTest {
     ExcelReader excelReader = new ExcelReader();
     String pathToFile = "F:\\JavaProjects\\TelegramBot\\src\\main\\resources\\Test_Document.xlsx";
 
+    @Test
+    public void testReader1(){
+
+    }
 }
