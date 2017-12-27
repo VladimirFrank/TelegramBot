@@ -15,10 +15,12 @@ public class FilePathUploader {
     private Document document;
     private Node root;
 
+    private String pathToXml = "C:\\Users\\dfnote021\\IdeaProjects\\TelegramBot\\src\\main\\resources\\filesLocation.xml";
+
     public String getCrossJournalPath(String officeLocationLetter){
         try{
             documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            document = documentBuilder.parse("F:\\JavaProjects\\TelegramBot\\src\\main\\resources\\filesLocation.xml");
+            document = documentBuilder.parse(pathToXml);
             document.getDocumentElement().normalize();
 
             root = document.getDocumentElement();
@@ -55,7 +57,7 @@ public class FilePathUploader {
     public String getIPJournalPath(String officeLocationLetter){
         try{
             documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            document = documentBuilder.parse("F:\\JavaProjects\\TelegramBot\\src\\main\\resources\\filesLocation.xml");
+            document = documentBuilder.parse(pathToXml);
             document.getDocumentElement().normalize();
 
             root = document.getDocumentElement();
