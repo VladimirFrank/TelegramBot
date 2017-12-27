@@ -22,7 +22,7 @@ public class MegaUltraBot extends TelegramLongPollingBot{
     private final String BOT_USER_NAME = "MegaUltraBot";
     private final String TOKEN = "458631815:AAFChJilHO8JIkske5O0kXntuCGP68XTi3s";
 
-    private final static Logger logger = Logger.getLogger(MegaUltraBot.class);
+    final static Logger logger = Logger.getLogger(MegaUltraBot.class.getName());
 
     @Autowired
     private FilePathUploader filePathUploader;
@@ -40,7 +40,7 @@ public class MegaUltraBot extends TelegramLongPollingBot{
             logger.debug("Incoming message: " + message.getFrom().getId()
                     + " " + message.getFrom().getUserName() + ": " + message.getText());
             String botAnswer = parseIncomingText(message.getText());
-            logger.debug("Bot answer: " + botAnswer);
+            logger.error("Bot answer: " + botAnswer);
             sendMessage(message, botAnswer);
         }
     }
