@@ -21,9 +21,6 @@ public class MegaUltraBot extends TelegramLongPollingBot{
     private final String BOT_USER_NAME = "MegaUltraBot";
     private final String TOKEN = "458631815:AAFChJilHO8JIkske5O0kXntuCGP68XTi3s";
 
-    // TODO Move that path to configuration file, not hardcoded.
-    //private String pathToExcelFile = "F:\\JavaProjects\\TelegramBot\\src\\main\\resources\\Test_Document.xlsx";
-
     @Autowired
     private FilePathUploader filePathUploader;
 
@@ -35,6 +32,7 @@ public class MegaUltraBot extends TelegramLongPollingBot{
     @Override
     public void onUpdateReceived(Update update) {
         Message message = update.getMessage();
+        System.out.println(message.getFrom().getId());
         if(message != null && message.hasText()){
             String botAnswer = parseIncomingText(message.getText());
             sendMessage(message, botAnswer);
@@ -42,13 +40,15 @@ public class MegaUltraBot extends TelegramLongPollingBot{
     }
 
     // Parse incoming message and return answer String
+    // TODO Add validation by regular expressions
     public String parseIncomingText(String textToParse){
 
         if(textToParse.contains("/help")){
             return "Пришли номер розетки или номер порта и я отвечу тебе, где это и чье.";
         }
 
-        if(textToParse.contains("-")){
+        // Find network rosette
+        if(textToParse.length() < 10){
             try {
                 return getNetworkRosette(textToParse);
             } catch (IOException e) {
@@ -56,13 +56,31 @@ public class MegaUltraBot extends TelegramLongPollingBot{
             }
         }
 
-        if(textToParse.contains(".")){
+        // Find ip address and username
+        if(textToParse.length() > 10){
             try {
                 return getIpInformation(textToParse);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+
+        // First of the options
+//        if(textToParse.contains("-")){
+//            try {
+//                return getNetworkRosette(textToParse);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        if(textToParse.contains(".")){
+//            try {
+//                return getIpInformation(textToParse);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
 
         return "Не понятная команда, для вызова меню команд, введите /help";
