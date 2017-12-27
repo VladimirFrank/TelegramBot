@@ -43,9 +43,20 @@ public class MegaUltraBot extends TelegramLongPollingBot{
     // TODO Add validation by regular expressions
     public String parseIncomingText(String textToParse){
 
-        if(textToParse.contains("/help")){
-            return "Пришли номер розетки или номер порта и я отвечу тебе, где это и чье.";
+        if(textToParse.contains("/start")){
+            return "Здравствуй, коллега. Это ОПИТИ Бот. Я могу найти для тебя номер розетки, порт на коммутаторе" +
+                    ", ip адрес или фамилию сотрудника. Пришли данные в формате: " +
+                    "A XX.XX , где А - первая буква названия офиса, XX.XX - номер розетки, порта или ip адрес." +
+                    " Для вызова помощи пришли мне /help";
         }
+
+        if(textToParse.contains("/help")){
+            return "Доступные команды:" +
+                    "А ХХ.ХХ , где А - первая буква офиса, ХХ.ХХ - номер розетки, порта на коммутаторе или ip адрес." +
+                    " Например, команда Т 10.247.1.110 - пришлет информацию по ip адресу (ФИО пользователя, если есть) на площадке Технопарк.";
+        }
+
+
 
         // Find network rosette
         if(textToParse.length() < 10){
