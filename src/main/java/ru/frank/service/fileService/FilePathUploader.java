@@ -51,4 +51,41 @@ public class FilePathUploader {
         }
         return "";
     }
+
+    public String getIPJournalPath(String officeLocationLetter){
+        try{
+            documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            document = documentBuilder.parse("F:\\JavaProjects\\TelegramBot\\src\\main\\resources\\filesLocation.xml");
+            document.getDocumentElement().normalize();
+
+            root = document.getDocumentElement();
+            NodeList pathList = document.getElementsByTagName("ipAddress");
+
+            String officeName;
+            if(officeLocationLetter.equalsIgnoreCase("а")){
+                officeName = "aurora";
+            } else if(officeLocationLetter.equalsIgnoreCase("т")){
+                officeName = "technopark";
+            } else{
+                return "";
+            }
+
+            for(int i = 0; i < pathList.getLength(); i++){
+                Node node = pathList.item(i);
+                if(node.getNodeType() == Node.ELEMENT_NODE){
+                    Element element = (Element) node;
+                    if(element.getAttribute("id").equals(officeName)){
+                        return element.getTextContent();
+                    }
+                }
+            }
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException ex){
+            ex.printStackTrace();
+        }
+        return "";
+    }
 }

@@ -56,10 +56,24 @@ public class MegaUltraBot extends TelegramLongPollingBot{
             }
         }
 
+        if(textToParse.contains(".")){
+            try {
+                return getIpInformation(textToParse);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
 
         return "Не понятная команда, для вызова меню команд, введите /help";
     }
 
+    /**
+     *
+     * @param lineForFind - rosette number to find
+     * @return String
+     * @throws IOException
+     */
     private String getNetworkRosette(String lineForFind) throws IOException{
         String rosetteToFind = lineForFind.substring(1).replaceAll(" ", "").replaceAll("-", ".");
         if(lineForFind.contains("а") || lineForFind.contains("А")){
@@ -68,6 +82,19 @@ public class MegaUltraBot extends TelegramLongPollingBot{
             return excelReader.findLineInExcelFile(getPathToCrossJournal("т"), rosetteToFind);
         } else if(lineForFind.contains("к") || lineForFind.contains("К")){
             return excelReader.findLineInExcelFile(getPathToCrossJournal("к"), rosetteToFind);
+        } else{
+            return "Не найден офис с таким ID.";
+        }
+    }
+
+    private String getIpInformation(String lineForFind) throws IOException{
+        String ipInfoToFind = lineForFind.substring(1).replaceAll(" ", "");
+        if(lineForFind.contains("а") || lineForFind.contains("А")){
+            return excelReader.findLineInExcelFile(getPathToIpJournal("а"), ipInfoToFind);
+        } else if(lineForFind.contains("т") || lineForFind.contains("Т")){
+            return excelReader.findLineInExcelFile(getPathToIpJournal("т"), ipInfoToFind);
+        } else if(lineForFind.contains("к") || lineForFind.contains("К")){
+            return excelReader.findLineInExcelFile(getPathToIpJournal("к"), ipInfoToFind);
         } else{
             return "Не найден офис с таким ID.";
         }
@@ -83,6 +110,10 @@ public class MegaUltraBot extends TelegramLongPollingBot{
      */
     private String getPathToCrossJournal(String officeLetter){
         return filePathUploader.getCrossJournalPath(officeLetter);
+    }
+
+    private String getPathToIpJournal(String officeLetter){
+        return filePathUploader.getIPJournalPath(officeLetter);
     }
 
     private void sendMessage(Message message, String text){

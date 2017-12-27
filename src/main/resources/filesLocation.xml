@@ -2,5 +2,6 @@
 <filesLocation>
     <crossJournal id="aurora">F:\JavaProjects\TelegramBot\src\main\resources\кроссовый_журнал_Аврора.xlsx</crossJournal>
     <crossJournal id="technopark">F:\JavaProjects\TelegramBot\src\main\resources\кроссовый_журнал_Технопарк.xlsx</crossJournal>
-
+    <ipAddress id="aurora">E:\projects\TelegramBot\src\main\resources\IP_Аврора.xls</ipAddress>
+    <ipAddress id="technopark">E:\projects\TelegramBot\src\main\resources\IP_Технопарк.xls</ipAddress>
 </filesLocation>
