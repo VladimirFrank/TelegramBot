@@ -1,5 +1,6 @@
 package ru.frank.bot;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,8 @@ public class MegaUltraBot extends TelegramLongPollingBot{
     private final String BOT_USER_NAME = "MegaUltraBot";
     private final String TOKEN = "458631815:AAFChJilHO8JIkske5O0kXntuCGP68XTi3s";
 
+    private final static Logger logger = Logger.getLogger(MegaUltraBot.class);
+
     @Autowired
     private FilePathUploader filePathUploader;
 
@@ -34,7 +37,10 @@ public class MegaUltraBot extends TelegramLongPollingBot{
         Message message = update.getMessage();
         System.out.println(message.getFrom().getId());
         if(message != null && message.hasText()){
+            logger.debug("Incoming message: " + message.getFrom().getId()
+                    + " " + message.getFrom().getUserName() + ": " + message.getText());
             String botAnswer = parseIncomingText(message.getText());
+            logger.debug("Bot answer: " + botAnswer);
             sendMessage(message, botAnswer);
         }
     }
@@ -44,10 +50,11 @@ public class MegaUltraBot extends TelegramLongPollingBot{
     public String parseIncomingText(String textToParse){
 
         if(textToParse.contains("/start")){
-            return "Здравствуй, коллега. Это ОПИТИ Бот. Я могу найти для тебя номер розетки, порт на коммутаторе" +
-                    ", ip адрес или фамилию сотрудника. Пришли данные в формате: " +
-                    "A XX.XX , где А - первая буква названия офиса, XX.XX - номер розетки, порта или ip адрес." +
-                    " Для вызова помощи пришли мне /help";
+            return "Здравствуй, коллега. Это ОПИТИ Бот. Я могу найти для тебя номер розетки, порт на коммутаторе, " +
+                    "ip адрес или фамилию сотрудника. Пришли данные в формате: " +
+                    "A XX.XX , где А - первая буква названия офиса, XX.XX - номер розетки, порта или ip адрес. " +
+                    "Например, на запрос 'А 10.247.1.121' Бот ответит тебе информация по данному ip адресу (ФИО сотрудника, имя ПК и прочее). " +
+                    "Для вызова помощи пришли мне /help";
         }
 
         if(textToParse.contains("/help")){
@@ -76,24 +83,6 @@ public class MegaUltraBot extends TelegramLongPollingBot{
             }
         }
 
-        // First of the options
-//        if(textToParse.contains("-")){
-//            try {
-//                return getNetworkRosette(textToParse);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        if(textToParse.contains(".")){
-//            try {
-//                return getIpInformation(textToParse);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-
-
         return "Не понятная команда, для вызова меню команд, введите /help";
     }
 
@@ -104,7 +93,7 @@ public class MegaUltraBot extends TelegramLongPollingBot{
      * @throws IOException
      */
     private String getNetworkRosette(String lineForFind) throws IOException{
-        String rosetteToFind = lineForFind.substring(1).replaceAll(" ", "").replaceAll("-", ".");
+        String rosetteToFind = lineForFind.substring(1).replaceAll(" ", "");
         if(lineForFind.contains("а") || lineForFind.contains("А")){
             return excelReader.findLineInExcelFile(getPathToCrossJournal("а"), rosetteToFind);
         } else if(lineForFind.contains("т") || lineForFind.contains("Т")){
