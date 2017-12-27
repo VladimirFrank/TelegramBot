@@ -2,8 +2,8 @@
 <filesLocation>
     <crossJournal id="aurora">C:\Users\dfnote021\IdeaProjects\TelegramBot\src\main\resources\кроссовый_журнал_Аврора.xlsx</crossJournal>
     <crossJournal id="technopark">C:\Users\dfnote021\IdeaProjects\TelegramBot\src\main\resources\кроссовый_журнал_Технопарк.xlsx</crossJournal>
-    <ipAddress id="aurora">C:\Users\dfnote021\IdeaProjects\TelegramBot\src\main\resources\IP_Аврора.xls</ipAddress>
-    <ipAddress id="technopark">C:\Users\dfnote021\IdeaProjects\TelegramBot\src\main\resources\IP_Технопарк.xls</ipAddress>
+    <ipAddress id="aurora">C:\Users\dfnote021\IdeaProjects\TelegramBot\src\main\resources\IP_Аврора.xlsx</ipAddress>
+    <ipAddress id="technopark">C:\Users\dfnote021\IdeaProjects\TelegramBot\src\main\resources\IP_Технопарк.xlsx</ipAddress>
 </filesLocation>
 
 <!--<filesLocation>-->
