@@ -13,6 +13,7 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 import ru.frank.dataParser.ExcelReader;
 import ru.frank.service.fileService.FilePathUploader;
+import ru.frank.service.fileService.UserAccessChecker;
 
 import java.io.IOException;
 
@@ -30,13 +31,20 @@ public class MegaUltraBot extends TelegramLongPollingBot{
     @Autowired
     private ExcelReader excelReader;
 
+    @Autowired
+    private UserAccessChecker userAccessChecker;
 
-    // Getting new message and answer it.
+
+    /**
+     * Getting new message and answer it.
+     *
+     * @param update - This object represents an incoming update.
+     */
     @Override
     public void onUpdateReceived(Update update) {
         Message message = update.getMessage();
         System.out.println(message.getFrom().getId());
-        if(message != null && message.hasText()){
+        if(message.hasText() & userAccessChecker.checkUserAccess(message.getFrom().getId().toString())){
             logger.debug("Incoming message: " + message.getFrom().getId()
                     + " " + message.getFrom().getUserName() + ": " + message.getText());
             String botAnswer = parseIncomingText(message.getText());
@@ -47,6 +55,13 @@ public class MegaUltraBot extends TelegramLongPollingBot{
 
     // Parse incoming message and return answer String
     // TODO Add validation by regular expressions
+
+    /**
+     * Base method for build bot answer.
+     *
+     * @param textToParse - text from user's incoming message
+     * @return
+     */
     public String parseIncomingText(String textToParse){
 
         if(textToParse.contains("/start")){
@@ -62,8 +77,6 @@ public class MegaUltraBot extends TelegramLongPollingBot{
                     "А ХХ.ХХ , где А - первая буква офиса, ХХ.ХХ - номер розетки, порта на коммутаторе или ip адрес." +
                     " Например, команда Т 10.247.1.110 - пришлет информацию по ip адресу (ФИО пользователя, если есть) на площадке Технопарк.";
         }
-
-
 
         // Find network rosette
         if(textToParse.length() < 10){
@@ -87,6 +100,7 @@ public class MegaUltraBot extends TelegramLongPollingBot{
     }
 
     /**
+     * Finds line with param in excel file.
      *
      * @param lineForFind - rosette number to find
      * @return String
@@ -105,6 +119,13 @@ public class MegaUltraBot extends TelegramLongPollingBot{
         }
     }
 
+    /**
+     * Finds line with param in excel file.
+     *
+     * @param lineForFind - rosette number to find
+     * @return String
+     * @throws IOException
+     */
     private String getIpInformation(String lineForFind) throws IOException{
         String ipInfoToFind = lineForFind.substring(1).replaceAll(" ", "");
         if(lineForFind.contains("а") || lineForFind.contains("А")){
@@ -119,10 +140,11 @@ public class MegaUltraBot extends TelegramLongPollingBot{
     }
 
     /**
-     * Get path to excel file by OfficeLetter (WARNING! Russian Letters in method!)
+     * Get path to excel file named "CrossJournal" by OfficeLetter (WARNING! Russian Letters in method!)
      * A - Aurora
      * T - Technopark
      * K - Kronos
+     *
      * @param officeLetter
      * @return String PathToFile;
      */
@@ -130,10 +152,25 @@ public class MegaUltraBot extends TelegramLongPollingBot{
         return filePathUploader.getCrossJournalPath(officeLetter);
     }
 
+    /**
+     * Get path to excel file named "IpJournal" by OfficeLetter (WARNING! Russian Letters in method!)
+     * A - Aurora
+     * T - Technopark
+     * K - Kronos
+     *
+     * @param officeLetter
+     * @return String PathToFile;
+     */
     private String getPathToIpJournal(String officeLetter){
         return filePathUploader.getIPJournalPath(officeLetter);
     }
 
+    /**
+     * Send text constructed by Bot to user who's asking.
+     *
+     * @param message
+     * @param text
+     */
     private void sendMessage(Message message, String text){
         // Temporary verification
         // TODO Replace verification to finding method

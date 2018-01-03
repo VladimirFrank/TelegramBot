@@ -6,6 +6,7 @@ import org.telegram.telegrambots.TelegramBotsApi;
 import ru.frank.bot.MegaUltraBot;
 import ru.frank.dataParser.ExcelReader;
 import ru.frank.service.fileService.FilePathUploader;
+import ru.frank.service.fileService.UserAccessChecker;
 
 @Configuration
 public class ApplicationConfiguration {
@@ -23,6 +24,11 @@ public class ApplicationConfiguration {
     @Bean
     public FilePathUploader filePathUploader(){
         return new FilePathUploader();
+    }
+
+    @Bean
+    public UserAccessChecker userAccessChecker(){
+        return new UserAccessChecker();
     }
 
 }
