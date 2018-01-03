@@ -20,7 +20,7 @@ public class UserAccessChecker {
     private Document document;
     private Node root;
 
-    private String pathToUsersAccessFile ="E:\\projects\\TelegramBot\\src\\main\\resources\\usersWithAccess";
+    private String pathToUsersAccessFile ="C:\\Users\\dfnote021\\IdeaProjects\\TelegramBot\\src\\main\\resources\\usersWithAccess";
 
     public boolean checkUserAccess(String userId){
         try{

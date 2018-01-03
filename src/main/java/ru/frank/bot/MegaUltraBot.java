@@ -48,6 +48,7 @@ public class MegaUltraBot extends TelegramLongPollingBot{
             logger.debug("Incoming message: " + message.getFrom().getId()
                     + " " + message.getFrom().getUserName() + ": " + message.getText());
             String botAnswer = parseIncomingText(message.getText());
+            botAnswer = checkBotAswerLength(botAnswer);
             logger.error("Bot answer: " + botAnswer);
             sendMessage(message, botAnswer);
         }
@@ -79,7 +80,7 @@ public class MegaUltraBot extends TelegramLongPollingBot{
         }
 
         // Find network rosette
-        if(textToParse.length() < 10){
+        if(textToParse.length() < 10 && textToParse.contains(".")){
             try {
                 return getNetworkRosette(textToParse);
             } catch (IOException e) {
@@ -187,6 +188,22 @@ public class MegaUltraBot extends TelegramLongPollingBot{
         } catch (TelegramApiException ex){
             ex.printStackTrace();
         }
+    }
+
+    /**
+     * Bot's answer must be less than 4096 UTF-8 chars
+     *
+     * At this version maximum is 1024 chars at Bot's answer.
+     * @param botAnswer
+     * @return String botAnswer with modify length (less that 1024 chars).
+     */
+    private String checkBotAswerLength(String botAnswer){
+        if(botAnswer.length() >  1024){
+            return botAnswer.substring(0, 1024);
+        } else{
+            return botAnswer;
+        }
+
     }
 
     @Override
