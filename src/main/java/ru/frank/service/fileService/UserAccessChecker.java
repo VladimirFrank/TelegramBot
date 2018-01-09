@@ -24,7 +24,7 @@ public class UserAccessChecker {
 
     public boolean checkUserAccess(String userId){
         try{
-            documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder() ;
             document = documentBuilder.parse(pathToUsersAccessFile);
             document.getDocumentElement().normalize();
 

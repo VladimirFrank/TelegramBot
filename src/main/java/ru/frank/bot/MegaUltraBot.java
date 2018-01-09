@@ -21,7 +21,7 @@ import java.io.IOException;
 public class MegaUltraBot extends TelegramLongPollingBot{
 
     private final String BOT_USER_NAME = "MegaUltraBot";
-    private final String TOKEN = "458631815:AAFChJilHO8JIkske5O0kXntuCGP68XTi3s";
+    private final String TOKEN = "";
 
     final static Logger logger = Logger.getLogger(MegaUltraBot.class.getName());
 
